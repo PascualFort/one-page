@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ITES Hub Audiovisual - Oportunidad de Inversión</title>
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Apply the Inter font family to the body */
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      /* Custom focus style for better visibility */
+      .focus-ring-brand {
+        --tw-ring-opacity: 1;
+        --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
+      }
+      .focus-visible:focus {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 2px var(--tw-ring-color);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-900 text-white flex items-center justify-center min-h-screen p-4"
+  >
+    <div
+      class="w-full max-w-lg mx-auto bg-slate-800/60 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden"
+    >
+      <div class="p-8 sm:p-10">
+        <!-- Header Section -->
+        <div class="text-center">
+          <svg
+            class="mx-auto h-12 w-auto text-blue-400"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125h17.25c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h-1.5m1.5 0h1.5m-1.5 0v-1.5m17.25 0v-1.5m0 0h1.5m-1.5 0h-1.5m-17.25 0a1.125 1.125 0 0 1-1.125-1.125v-6.75c0-.621.504-1.125 1.125-1.125h17.25c.621 0 1.125.504 1.125 1.125v6.75c0 .621-.504 1.125-1.125 1.125m-17.25 0h-1.5m1.5 0h1.5m-1.5 0v-6.75m17.25 0v-6.75m0 0h1.5m-1.5 0h-1.5m-1.5 6.75v-1.5m-14.25-9L12 3.375 19.125 7.5"
+            />
+          </svg>
+          <h1
+            class="mt-4 text-2xl sm:text-3xl font-bold tracking-tight text-white"
+          >
+            Invierta en el Futuro del Sector Audiovisual
+          </h1>
+          <p class="mt-3 text-sm sm:text-base text-slate-300">
+            Acceda al dossier y descubra la oportunidad única de invertir en
+            ITES Hub Audiovisual. Un proyecto con 50 años de historia, activos
+            de gran valor y un plan de crecimiento exponencial en el corazón de
+            Barcelona.
+          </p>
+        </div>
+
+        <!-- Form Section -->
+        <form id="downloadForm" class="mt-8 space-y-6">
+          <div>
+            <label for="email" class="sr-only">Dirección de email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+              placeholder="Introduzca su email"
+            />
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus-ring-brand focus-visible transition-colors duration-200"
+            >
+              Descargar Dossier de Inversión
+            </button>
+          </div>
+        </form>
+
+        <!-- Message Section -->
+        <div id="message" class="mt-6 text-center text-sm font-medium"></div>
+      </div>
+    </div>
+
+    <script>
+      // --- JavaScript for Form Handling ---
+
+      // Get references to the form and message elements
+      const downloadForm = document.getElementById("downloadForm");
+      const emailInput = document.getElementById("email");
+      const messageDiv = document.getElementById("message");
+
+      // Add an event listener for the form submission
+      downloadForm.addEventListener("submit", function (event) {
+        // Prevent the default form submission which reloads the page
+        event.preventDefault();
+
+        // Get the email value and trim any whitespace
+        const email = emailInput.value.trim();
+
+        // Simple email validation
+        if (email && email.includes("@") && email.includes(".")) {
+          // If the email is valid, show a success message
+          messageDiv.textContent = `¡Gracias! El dossier ha sido enviado a ${email}.`;
+          messageDiv.className =
+            "mt-6 text-center text-sm font-medium text-green-400";
+
+          // Clear the input field
+          emailInput.value = "";
+        } else {
+          // If the email is invalid, show an error message
+          messageDiv.textContent =
+            "Por favor, introduzca una dirección de email válida.";
+          messageDiv.className =
+            "mt-6 text-center text-sm font-medium text-red-400";
+        }
+
+        // Make the message visible
+        messageDiv.style.opacity = "1";
+      });
+    </script>
+  </body>
+</html>
