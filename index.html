@@ -102,13 +102,17 @@
     <script>
       // --- JavaScript for Form Handling ---
 
+      // Web3Forms configuration
+      const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+      const WEB3FORMS_ACCESS_KEY = "1a84e45f-7427-47e3-9104-f7697b574a2c"; // You'll get this from web3forms.com
+
       // Get references to the form and message elements
       const downloadForm = document.getElementById("downloadForm");
       const emailInput = document.getElementById("email");
       const messageDiv = document.getElementById("message");
 
       // Add an event listener for the form submission
-      downloadForm.addEventListener("submit", function (event) {
+      downloadForm.addEventListener("submit", async function (event) {
         // Prevent the default form submission which reloads the page
         event.preventDefault();
 
@@ -116,24 +120,81 @@
         const email = emailInput.value.trim();
 
         // Simple email validation
-        if (email && email.includes("@") && email.includes(".")) {
-          // If the email is valid, show a success message
-          messageDiv.textContent = `¡Gracias! El dossier ha sido enviado a ${email}.`;
-          messageDiv.className =
-            "mt-6 text-center text-sm font-medium text-green-400";
-
-          // Clear the input field
-          emailInput.value = "";
-        } else {
+        if (!email || !email.includes("@") || !email.includes(".")) {
           // If the email is invalid, show an error message
           messageDiv.textContent =
             "Por favor, introduzca una dirección de email válida.";
           messageDiv.className =
             "mt-6 text-center text-sm font-medium text-red-400";
+          messageDiv.style.opacity = "1";
+          return;
         }
 
-        // Make the message visible
-        messageDiv.style.opacity = "1";
+        // Show loading state
+        const submitButton = downloadForm.querySelector(
+          'button[type="submit"]'
+        );
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = "Enviando...";
+        submitButton.disabled = true;
+        messageDiv.textContent = "";
+        messageDiv.style.opacity = "0";
+
+        try {
+          // Prepare the form data for Web3Forms
+          const formData = {
+            access_key: WEB3FORMS_ACCESS_KEY,
+            from_name: "ITES Hub Audiovisual Landing Page",
+            subject: "Solicitud de Dossier de Inversión - ITES Hub Audiovisual",
+            message: `Nueva solicitud de dossier de inversión desde la landing page.
+
+Email del solicitante: ${email}
+Fecha: ${new Date().toLocaleString("es-ES")}
+
+El usuario ha solicitado el dossier de inversión de ITES Hub Audiovisual.`,
+            email: email,
+            replyto: email,
+          };
+
+          // Send the form data to Web3Forms
+          const response = await fetch(WEB3FORMS_ENDPOINT, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            // If the email was sent successfully, show a success message
+            messageDiv.textContent = `¡Gracias! El dossier ha sido enviado a ${email}.`;
+            messageDiv.className =
+              "mt-6 text-center text-sm font-medium text-green-400";
+
+            // Clear the input field
+            emailInput.value = "";
+          } else {
+            // If there was an error, show an error message
+            messageDiv.textContent =
+              "Hubo un error al enviar el dossier. Por favor, inténtelo de nuevo.";
+            messageDiv.className =
+              "mt-6 text-center text-sm font-medium text-red-400";
+          }
+        } catch (error) {
+          // If there was a network error, show an error message
+          console.error("Error sending form:", error);
+          messageDiv.textContent =
+            "Hubo un error de conexión. Por favor, inténtelo de nuevo.";
+          messageDiv.className =
+            "mt-6 text-center text-sm font-medium text-red-400";
+        } finally {
+          // Reset button state
+          submitButton.textContent = originalButtonText;
+          submitButton.disabled = false;
+          messageDiv.style.opacity = "1";
+        }
       });
     </script>
   </body>
