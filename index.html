@@ -154,10 +154,9 @@ El usuario ha solicitado el dossier de inversión de ITES Hub Audiovisual.`,
           const result = await response.json();
 
           if (result.success) {
-            // If the email was sent successfully, show a success message
-            messageDiv.textContent = `¡Gracias! El dossier ha sido enviado a ${email}.`;
-            messageDiv.className =
-              "mt-6 text-center text-sm font-medium text-green-400";
+            // If the email was sent successfully, redirect to the Google Drive document
+            window.location.href =
+              "https://docs.google.com/presentation/d/1uxBp1XeKprxrIzcAyFDZM0Cpqj5Hrv4Q/edit?usp=sharing&ouid=105980328177479721848&rtpof=true&sd=true";
 
             // Clear the input field
             emailInput.value = "";
